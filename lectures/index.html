@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lectures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem auto; max-width: 800px; padding: 0 1rem; }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    .hint { color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    li { padding: .6rem .2rem; border-bottom: 1px solid #eee; display:flex; align-items:center; gap:.6rem; }
+    .badge { font-size: .75rem; padding: .1rem .4rem; border:1px solid #ddd; border-radius:.4rem; color:#555 }
+    a { color: #0f4aff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .muted { color:#6b7280; font-size:.8rem }
+  </style>
+</head>
+<body>
+  <h1>ICS 483 — Lectures</h1>
+  <div class="hint">Files below are auto-listed from this repository’s <code>/lectures</code> folder.</div>
+  <ul id="list"><li>Loading…</li></ul>
+
+  <script>
+    // ---- CONFIG: set your repo owner/name and site base URL ----
+    const owner = "zwei2025";
+    const repo  = "ics483";
+    const api   = `https://api.github.com/repos/${owner}/${repo}/contents/lectures`;
+    const siteBase = `https://${owner}.github.io/${repo}/lectures/`;
+
+    async function main(){
+      const ul = document.getElementById('list');
+      try {
+        const res = await fetch(api, { headers: { 'Accept': 'application/vnd.github+json' } });
+        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+        const items = await res.json();
+
+        // Keep files & folders, sorted with folders first then by name
+        items.sort((a,b) => (a.type===b.type) ? a.name.localeCompare(b.name) : (a.type==="dir" ? -1 : 1));
+
+        ul.innerHTML = "";
+        for (const it of items) {
+          // Skip this index.html itself to avoid confusion
+          if (it.name.toLowerCase() === "index.html") continue;
+
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+
+          if (it.type === "file") {
+            link.href = siteBase + encodeURIComponent(it.name);
+            link.textContent = it.name;
+            li.append(link);
+            const size = document.createElement('span');
+            size.className = "muted";
+            // show simple size in KB/MB if available
+            if (typeof it.size === "number") {
+              const kb = it.size / 1024;
+              size.textContent = ` (${kb < 1024 ? kb.toFixed(1)+' KB' : (kb/1024).toFixed(2)+' MB'})`;
+              li.append(size);
+            }
+          } else if (it.type === "dir") {
+            link.href = siteBase + encodeURIComponent(it.name) + "/";
+            link.textContent = it.name + "/";
+            li.append(link);
+            const badge = document.createElement('span');
+            badge.className = "badge";
+            badge.textContent = "folder";
+            li.append(badge);
+          }
+          ul.append(li);
+        }
+
+        if (!ul.children.length) {
+          ul.innerHTML = "<li class='muted'>This folder is empty. Upload PDF/PPT/Notebooks to show them here.</li>";
+        }
+      } catch (e) {
+        ul.innerHTML = `<li style="color:#b91c1c">Failed to load list: ${e.message}</li>`;
+      }
+    }
+    main();
+  </script>
+</body>
+</html>
