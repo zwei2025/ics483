@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ICS 483: Computer Vision — Course Website</title>
+  <meta name="description" content="ICS 483 Computer Vision — Course website based on 2024 syllabus (to verify for current term)" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>👁️</text></svg>">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <!-- Alpine.js -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <style>
+    .prose a { text-decoration: underline; }
+    .sticky-nav { backdrop-filter: blur(6px); background-color: rgba(255,255,255,0.85); }
+    @media (prefers-color-scheme: dark) { .sticky-nav { background-color: rgba(17,24,39,0.7); } }
+    [x-cloak]{ display:none!important; }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900 antialiased" x-data="courseData()" x-init="$nextTick(() => init())">
+  <!-- Nav -->
+  <header class="sticky top-0 z-40 sticky-nav border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between h-14">
+        <a href="#" class="font-semibold tracking-tight flex items-center gap-2">
+          <i data-lucide="camera" class="w-4 h-4"></i>
+          <span>ICS 483 · Computer Vision</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-4 text-sm">
+          <a href="#info" class="hover:opacity-80">Info</a>
+          <a href="#staff" class="hover:opacity-80">Staff</a>
+          <a href="#policies" class="hover:opacity-80">Policies</a>
+          <a href="#coursework" class="hover:opacity-80">Coursework</a>
+          <a href="#schedule" class="hover:opacity-80">Schedule</a>
+          
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-indigo-50 to-white border-b">
+    <div class="max-w-6xl mx-auto px-4 py-10">
+      <div class="flex items-center gap-3 flex-wrap">
+        <h1 class="text-3xl md:text-4xl font-bold">ICS 483: Computer Vision</h1>
+        
+      </div>
+      <p class="mt-2 text-gray-600">University of Hawaiʻi at Mānoa</p>
+      <div class="mt-4 flex flex-wrap gap-3 text-sm">
+        <a :href="links.lectures" target="_blank" class="px-3 py-1.5 rounded-full bg-indigo-600 text-white inline-flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4"></i><span>Lectures</span></a>
+        
+        <a :href="links.lms" target="_blank" class="px-3 py-1.5 rounded-full bg-white border inline-flex items-center gap-2"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Lamaku</span></a>
+        
+        
+      </div>
+      <!-- Status badges -->
+      <div class="mt-3 text-xs" x-show="diag.ready" x-cloak>
+        <span class="px-2 py-1 rounded-full" :class="diag.lucideOk ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">Lucide: <strong x-text="diag.lucideOk ? 'OK' : 'Unavailable'"></strong></span>
+        <span class="ml-2 px-2 py-1 rounded-full" :class="diag.alpineOk ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">Alpine: <strong x-text="diag.alpineOk ? 'OK' : 'Unavailable'"></strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info (NEW) -->
+  <section id="info" class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-semibold">Course Information</h2>
+    <div class="mt-4 grid md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl shadow p-6">
+        <dl class="text-sm space-y-2">
+          <div class="flex"><dt class="w-40 text-gray-500">Course Number</dt><dd class="font-medium">ICS 483</dd></div>
+          <div class="flex"><dt class="w-40 text-gray-500">Title</dt><dd class="font-medium">Computer Vision</dd></div>
+          <div class="flex"><dt class="w-40 text-gray-500">Meeting Time</dt><dd>Tue/Thu 12:00–1:15pm (HST)</dd></div>
+          
+          <div class="flex"><dt class="w-40 text-gray-500">Website</dt><dd>this page</dd></div>
+        </dl>
+        <h3 class="mt-6 font-semibold">Prerequisites</h3>
+        <ul class="mt-2 list-disc list-inside text-sm text-gray-700 space-y-1">
+          <li>Programming in Python (important)</li>
+          <li>MATH 311 Introduction to Linear Algebra (important)</li>
+          <li>ICS 212 Program Structure</li>
+          <li>ICS 311 Algorithms</li>
+          <li>ICS 314 Software Engineering I</li>
+        </ul>
+      </div>
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-semibold">Description</h3>
+        <p class="mt-2 text-sm text-gray-700">Comprehensive introduction to computer vision: image processing, detection &amp; recognition, geometry- and physics-based vision, and video analysis. Emphasis on concepts and hands-on solutions to real-world vision problems.</p>
+        <h3 class="mt-6 font-semibold">Learning Outcomes</h3>
+        <ul class="mt-2 list-disc list-inside text-sm text-gray-700 space-y-1">
+          <li>Understand principles of image formation &amp; analysis in 2D/3D vision.</li>
+          <li>Use core methods for registration, alignment, matching.</li>
+          <li>Explore categorization &amp; segmentation.</li>
+          <li>Apply techniques to build practical CV applications.</li>
+        </ul>
+        <h3 class="mt-6 font-semibold">Texts &amp; Resources</h3>
+        <ul class="mt-2 list-disc list-inside text-sm text-gray-700 space-y-1">
+          <li>Szeliski (2022), <em>Computer Vision: Algorithms and Applications</em> (free e‑book).</li>
+          <li>Stanford CS231n course notes.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaching Staff -->
+  <section id="staff" class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-semibold">Teaching Staff</h2>
+    <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <template x-for="member in staff" :key="member.name">
+        <div class="bg-white rounded-2xl shadow p-4 text-center">
+          <img :src="member.photo" :alt="member.name" class="w-24 h-24 mx-auto rounded-full object-cover"/>
+          <div class="mt-3 font-medium" x-text="member.name"></div>
+          <div class="text-xs text-gray-500" x-text="member.role"></div>
+          <div class="text-xs text-gray-500 mt-1" x-show="member.email" x-text="member.email"></div>
+          <a :href="member.link" target="_blank" class="mt-2 inline-block text-sm underline" x-show="member.link">Profile</a>
+        </div>
+      </template>
+    </div>
+    <div class="mt-4 text-xs text-gray-500">Office Hours: POST 312, Tue/Thu 1:15–2:15pm (right after class)</div>
+  </section>
+
+  <!-- Policies (updated from syllabus) -->
+  <section id="policies" class="bg-white border-y">
+    <div class="max-w-6xl mx-auto px-4 py-10">
+      <h2 class="text-2xl font-semibold">Policies</h2>
+
+      <div class="mt-6 grid md:grid-cols-2 gap-6 text-sm">
+        <!-- Column 1 -->
+        <div class="space-y-6">
+          <div class="bg-gray-50 rounded-2xl border p-5">
+            <h3 class="font-semibold mb-2 flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i>Late Days</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700">
+              <li>Assignments & take‑home quizzes: <strong>‑20% per late day</strong></li>
+              <li>Maximum <strong>2 late days</strong> per item</li>
+              <li>Final project: <strong>no late submissions</strong></li>
+            </ul>
+          </div>
+
+          <div class="bg-gray-50 rounded-2xl border p-5">
+            <h3 class="font-semibold mb-2 flex items-center gap-2"><i data-lucide="brain" class="w-4 h-4"></i>Use of LLMs</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700">
+              <li>LLMs may be consulted for <em>clarification or brainstorming</em></li>
+              <li>LLMs <strong>may not produce final code or written solutions</strong></li>
+              <li>If used, include a brief appendix: prompts + responses + reflection</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="space-y-6">
+          <div class="bg-gray-50 rounded-2xl border p-5">
+            <h3 class="font-semibold mb-2 flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i>Academic Integrity</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700">
+              <li>All work must be your own unless explicitly group‑based</li>
+              <li>Prohibited: plagiarism, collusion, falsification, code copying</li>
+              <li>Violations are reported per UH policy</li>
+            </ul>
+          </div>
+
+          <div class="bg-gray-50 rounded-2xl border p-5">
+            <h3 class="font-semibold mb-2 flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i>Withdrawal</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700">
+              <li>It is the student's responsibility to manage enrollment</li>
+              <li>Check deadlines to avoid a failing grade</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coursework (points-based, from syllabus) -->
+  <section id="coursework" class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-semibold">Coursework &amp; Grading</h2>
+    <div class="mt-4 grid md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-semibold">Breakdown</h3>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li class="flex justify-between"><span>Programming Assignments</span><span class="font-medium">70 pts</span></li>
+          <li class="flex justify-between"><span>Final Project</span><span class="font-medium">30 pts</span></li>
+          <li class="flex justify-between"><span>Take‑home Quizzes</span><span class="font-medium">20 pts</span></li>
+          <li class="flex justify-between border-t pt-2"><span>Total</span><span class="font-bold">120 pts (+ extra credit)</span></li>
+        </ul>
+      </div>
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-semibold">Assignments &amp; Quizzes</h3>
+        <p class="mt-3 text-sm text-gray-700">Please refer to Lamaku for official assignment releases, descriptions, starter code, and submission deadlines.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule -->
+  <section id="schedule" class="bg-white border-t">
+    <div class="max-w-6xl mx-auto px-4 py-10">
+      <h2 class="text-2xl font-semibold">Schedule (Overview)</h2>
+      <p class="mt-4 text-sm text-gray-700 leading-6">This course progresses through four major phases over the term:</p>
+      <ol class="mt-4 space-y-4 text-sm text-gray-700 list-decimal list-inside">
+        <li><strong>Foundations of Vision</strong> — image formation, filtering, edge/feature detection (Weeks 1–3)</li>
+        <li><strong>Recognition & Representation</strong> — descriptors, matching, alignment, classification (Weeks 4–7)</li>
+        <li><strong>Segmentation & Higher-Level Vision</strong> — grouping, region/instance segmentation, structure (Weeks 8–11)</li>
+        <li><strong>Project & Applied Vision</strong> — datasets, benchmarks, and end‑to‑end systems (Weeks 12–16)</li>
+      </ol>
+      <p class="mt-6 text-xs text-gray-500">Exact dates for readings, assignments, quizzes, and presentations are published on Lamaku.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t py-8">
+    <div class="max-w-6xl mx-auto px-4 text-sm text-gray-500">
+      <div>© <span x-text="new Date().getFullYear()"></span> ICS 483 · University of Hawaiʻi at Mānoa · Built with Tailwind &amp; Alpine</div>
+      <div class="mt-2">This page is adapted from the 2024 syllabus; update dates/rooms if the department assigns changes.</div>
+      <details class="mt-4">
+        <summary class="cursor-pointer select-none text-gray-600">Diagnostics</summary>
+        <div class="mt-2 text-xs space-y-1">
+          <div>window.lucide present: <span class="font-mono" x-text="String(!!window.lucide)"></span></div>
+          <div>Alpine.version: <span class="font-mono" x-text="(window.Alpine && Alpine.version) ? Alpine.version : 'N/A'"></span></div>
+          <div>Last icon render: <span class="font-mono" x-text="diag.lastIconAt || 'N/A'"></span></div>
+          <button class="mt-2 px-2 py-1 border rounded" @click="forceRenderIcons()">Force Re-render Icons</button>
+        </div>
+      </details>
+    </div>
+  </footer>
+
+  <script>
+    function courseData(){
+      return {
+        links: {
+           // replace
+          lectures: "lectures/", // replace
+          lms: "https://lamaku.hawaii.edu/d2l/home/62404", // replace
+           // replace
+           // link to PDF if available
+        },
+        staff: [
+          { name: "Huaijin (George) Chen", role: "Instructor", email: "huaijin@hawaii.edu", photo: "https://api.dicebear.com/7.x/identicon/svg?seed=ICS483", link: "#" },
+          { name: "Zhengxiang Wei", role: "TA", email: "zwei@hawaii.edu", photo: "https://api.dicebear.com/7.x/identicon/svg?seed=ICS483", link: "" },
+        ],
+        homeworks: [
+          { idx:1, title:"PA1: Image Processing Basics", page:"#", zip:"#", due:"Tue Sep 24 11:59pm" },
+          { idx:2, title:"PA2: Feature Matching", page:"#", zip:"#", due:"Tue Oct 8 11:59pm" },
+          { idx:3, title:"PA3: Recognition &amp; SVM", page:"#", zip:"#", due:"Tue Oct 29 11:59pm" },
+          { idx:4, title:"PA4: Segmentation", page:"#", zip:"#", due:"Tue Nov 19 11:59pm" },
+        ],
+        schedule: [
+          { week: 1, range: "Aug 26–Sep 1", tag: "Intro", items:[
+            { date:"Tue", title:"Course Overview &amp; Image Formation", note:"12:00–1:15pm"},
+            { date:"Thu", title:"Image Filtering &amp; Edge Detection", note:"12:00–1:15pm"},
+          ]},
+          { week: 2, range: "Sep 2–Sep 8", tag: "PA1 Out", items:[
+            { date:"Tue", title:"Feature Detection (Harris/SIFT)", note:"12:00–1:15pm"},
+            { date:"Thu", title:"Feature Description &amp; Matching", note:"12:00–1:15pm"},
+          ]},
+        ],
+        diag: { ready:false, lucideOk:false, alpineOk:false, lastIconAt:null },
+        init(){
+          this.diag.alpineOk = !!(window.Alpine && Alpine.version);
+          const render = () => {
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+              window.lucide.createIcons();
+              this.diag.lucideOk = true;
+              this.diag.lastIconAt = new Date().toLocaleTimeString();
+            }
+          };
+          render();
+          document.addEventListener('DOMContentLoaded', render, { once:true });
+          setTimeout(render, 300);
+          setTimeout(render, 1000);
+          this.diag.ready = true;
+        },
+        forceRenderIcons(){
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+            this.diag.lucideOk = true;
+            this.diag.lastIconAt = new Date().toLocaleTimeString();
+          } else {
+            console.error('Lucide is not available');
+            this.diag.lucideOk = false;
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
